@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./php-apache
+      args:
+        - UID=${UID}
+        - GID=${GID}
+        - USERNAME=${USERNAME}
+        - GROUPNAME=${GROUPNAME}
+    container_name: calendar-web
+    restart: always
+    volumes:
+      - "../:/var/www/html"
+    depends_on:
+      - db
+    ports:
+      - 8000:80
+    working_dir: /var/www/html
+
+  db:
+    image: mariadb:10.3.9
+    container_name: calendar-db
+    restart: always
+    volumes:
+      - "./mysql/data:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: dev_calendar
+      MYSQL_ROOT_PASSWORD: dev_calendar
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --wait-timeout=1800 --connect-timeout=1800 --net-read-timeout=1800 --max-allowed-packet=1G --innodb-buffer-pool-size=1G
