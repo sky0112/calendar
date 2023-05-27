@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// https://readouble.com/laravel/6.x/ja/routing.html
+// Route::get('/user', 'UserController@index');
+Route::get('/calendar','CalendarController@index');
+
